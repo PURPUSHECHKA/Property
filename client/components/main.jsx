@@ -3,12 +3,14 @@ import { AddressSuggestions } from 'react-dadata'
 import 'react-dadata/dist/react-dadata.css'
 
 import Footer from './footer'
+import Header from './header'
 
 const Main = () => {
   const [value, setValue] = useState()
 
   return (
     <div className="bg-gray-300">
+      <Header />
       <div className="min-h-screen bg-gray-100 flex justify-center items-center">
         <div className="container-md mx-auto bg-cyan-700 rounded-lg p-14">
           <h1 className="text-center font-bold text-white text-4xl">
