@@ -55,27 +55,49 @@ if (config.mongoEnabled) {
 
 server.get('/api/v1/:adress', async (req, res) => {
   const { adress } = req.params
-  const url = `https://lk.rosreestr.ru/account-back/address/search?term=${adress}`
-  const encodingUrl = encodeURI(url);
-  const getAskByReestr = await axios(encodingUrl)
-    .then(({ data }) => {
-      axios({
-        headers: {
-          'Host': 'lk.rosreestr.ru',
-          'Accept': 'application/json',
-          'Cookie': 'hazelcast.sessionId=HZCCD7B2FC6B8E4216AA4472DF0691DF4C',
-        },
-        method: 'POST',
-        url: 'https://lk.rosreestr.ru/account-back/on',
-        data: {
-          'filterType': 'cadastral',
-          'cadNumbers': [`${data[0].cadnum}`]
-        }
+  console.log(adress)
+  const regexp = /\d+:\d+:\d+:\d+/g
+  regexp.test(adress)
+  if (!regexp) {
+    const url = `https://lk.rosreestr.ru/account-back/address/search?term=${adress}`
+    const encodingUrl = encodeURI(url);
+    const getAskByReestrByAdress = await axios(encodingUrl)
+      .then(({ data }) => {
+        axios({
+          headers: {
+            'Host': 'lk.rosreestr.ru',
+            'Accept': 'application/json',
+            'Cookie': 'hazelcast.sessionId=HZ2256404A3E1A46B89853781F47DCBE21',
+          },
+          method: 'POST',
+          url: 'https://lk.rosreestr.ru/account-back/on',
+          data: {
+            'filterType': 'cadastral',
+            'cadNumbers': [`${data[0].cadnum}`]
+          }
+        })
+          .then((result) => console.log('RESULT', result.data))
       })
-        .then((result) => console.log('RESULT', result.data))
-    })
+      .catch((e) => console.log('ERROR', e))
+    res.json(getAskByReestrByAdress)
+  }
+  const getAskByReestrByAdress = await axios({
+    headers: {
+      'Host': 'lk.rosreestr.ru',
+      'Accept': 'application/json',
+      'Cookie': 'hazelcast.sessionId=HZ2256404A3E1A46B89853781F47DCBE21',
+    },
+    method: 'POST',
+    url: 'https://lk.rosreestr.ru/account-back/on',
+    data: {
+      'filterType': 'cadastral',
+      'cadNumbers': [`${adress}`]
+    }
+  })
+    .then((result) => console.log('RESULT', result.data))
+
     .catch((e) => console.log('ERROR', e))
-  res.json(getAskByReestr)
+  res.json(getAskByReestrByAdress)
 })
 
 server.use('/api/', (req, res) => {
