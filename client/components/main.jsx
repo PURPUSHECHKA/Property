@@ -1,9 +1,24 @@
 import React, { useState } from 'react'
 import { AddressSuggestions } from 'react-dadata';
 import 'react-dadata/dist/react-dadata.css';
+// import axios from 'axios'
 
 const Main = () => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState('');
+  // const onChange = (e) => {
+  //   setValue(e.target.value)
+  // }
+
+  // useEffect(() => {
+  //   const loadAdress = async () => {
+  //     const response = await axios(`https://lk.rosreestr.ru/account-back/address/search?term=${value}`)
+  //     console.log('HELLO', response.data)
+  //   }
+  //   loadAdress()
+  // }, [])
+
+  console.log('VALUE', value)
+  console.log('SETVALUE', setValue)
 
   return (
     <div className="bg-gray-300">
